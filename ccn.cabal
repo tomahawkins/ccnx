@@ -1,0 +1,37 @@
+name:    improve
+version: 0.0.0
+
+category: Network
+
+synopsis: TODO
+
+description:
+  TODO
+
+author:     Tom Hawkins <tomahawkins@gmail.com>
+maintainer: Tom Hawkins <tomahawkins@gmail.com>
+
+license:      BSD3
+license-file: LICENSE
+
+homepage: http://tomahawkins.org
+
+build-type:    Simple
+cabal-version: >= 1.6
+
+library
+    build-depends:
+        base       >= 4.2     && < 5,
+        bytestring >= 0.9.1.6 && < 0.9.2
+
+    exposed-modules:
+        Network.CCN
+
+    extensions:
+
+    ghc-options: -W
+
+source-repository head
+    type:     git
+    location: git://github.com/tomahawkins/ccn.git
+
