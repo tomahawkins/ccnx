@@ -28,7 +28,6 @@ module Network.CCNx.Messages
   ) where
 
 import Data.ByteString (ByteString)
-import Data.Word
 
 -- | The two types of CCNx messages.
 data Message
@@ -78,7 +77,10 @@ type Scope = Int
 type Nonce = String
 type MinSuffixComponents = Int
 type MaxSuffixComponents = Int
-type Timestamp = Word16  -- 12 bit fraction
+
+-- | Seconds since the start of Unix time.
+type Timestamp = Int
+
 type FreshnessSeconds = Int
 type FinalBlockID = String
 

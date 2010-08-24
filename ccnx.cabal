@@ -1,5 +1,5 @@
 name:    ccnx
-version: 0.0.0
+version: 0.0.1
 
 category: Network
 
@@ -27,6 +27,7 @@ library
     exposed-modules:
         Network.CCNx
         Network.CCNx.Messages
+        Network.CCNx.CCNb
 
     extensions:
 
