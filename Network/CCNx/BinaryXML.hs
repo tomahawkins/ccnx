@@ -1,7 +1,8 @@
-module Network.CCNx.CCNb
+-- | Parsing and printing binary XML.
+module Network.CCNx.BinaryXML
   ( Block (..)
-  , printCCNb
-  , parseCCNb
+  , printBinaryXML
+  , parseBinaryXML
   ) where
 
 import Data.Bits
@@ -11,6 +12,7 @@ import Data.Char
 import Data.Word
 import Text.Printf
 
+-- | Binary XML structure.
 data Block
   = BLOB [Word8]
   | UDATA String
@@ -23,17 +25,18 @@ data Block
 
 data BlockType = BLOB' | UDATA' | TAG' | ATTR' | DTAG' | DATTR' | EXT' deriving Show
 
-printCCNb :: Block -> ByteString
-printCCNb = B.pack . formatCCNb
+-- | Print binary XML.
+printBinaryXML :: Block -> ByteString
+printBinaryXML = B.pack . formatBlock
 
-formatCCNb :: Block -> [Word8]
-formatCCNb a = case a of
+formatBlock :: Block -> [Word8]
+formatBlock a = case a of
   BLOB a    -> formatHeader BLOB'  (length a) ++ a
   UDATA a   -> formatHeader UDATA' (length a) ++ map (fromIntegral . ord) a
-  TAG a b   -> formatHeader TAG'   (length a - 1) ++ map (fromIntegral . ord) a ++ concatMap formatCCNb b ++ [0x00]
-  ATTR a b  -> formatHeader ATTR'  (length a - 1) ++ map (fromIntegral . ord) a ++ formatCCNb (UDATA b)
-  DTAG a b  -> formatHeader DTAG'  a ++ concatMap formatCCNb b ++ [0x00]
-  DATTR a b -> formatHeader DATTR' a ++ formatCCNb (UDATA b)  --XXX Is this right, or does it need to close with 00?
+  TAG a b   -> formatHeader TAG'   (length a - 1) ++ map (fromIntegral . ord) a ++ concatMap formatBlock b ++ [0x00]
+  ATTR a b  -> formatHeader ATTR'  (length a - 1) ++ map (fromIntegral . ord) a ++ formatBlock (UDATA b)
+  DTAG a b  -> formatHeader DTAG'  a ++ concatMap formatBlock b ++ [0x00]
+  DATTR a b -> formatHeader DATTR' a ++ formatBlock (UDATA b)
   EXT a     -> formatHeader EXT' a
 
 blockTypeCode :: BlockType -> Word8
@@ -64,8 +67,9 @@ formatHeader t a = f (shiftR a 4) ++ [shiftL (fromIntegral $ a .&. 0xF) 3 .|. 0x
   f 0 = []
   f a = f (shiftR a 7) ++ [fromIntegral (a .&. 0x7F)]
 
-parseCCNb :: ByteString -> Block
-parseCCNb = fst . parseBlock . B.unpack
+-- | Parse binary XML.
+parseBinaryXML :: ByteString -> Block
+parseBinaryXML = fst . parseBlock . B.unpack
 
 parseBlock :: [Word8] -> (Block, [Word8])
 parseBlock a = case tt of
@@ -111,6 +115,4 @@ parseHeader a = ((tt, n), b)
   f n _ [] = n
   f n s (a : b) = f (n .|. shiftL (fromIntegral a) s) (s + 7) b
   --header = "header: " ++ concat [ printf "%02x" a | a <- take (length a - length b) a ] ++ ": " ++ show tt ++ "  " ++ show n
-
-
 
