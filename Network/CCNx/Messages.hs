@@ -42,9 +42,11 @@ data ContentObject = ContentObject
 
 type Content = ByteString
 
+-- | The name of the content.
 type Name = [Component]
 
-type Component = String
+-- | A component of a 'Name'.
+type Component = ByteString
 
 data SignedInfo = SignedInfo
   PublisherPublicKeyDigest
