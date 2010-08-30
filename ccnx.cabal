@@ -27,6 +27,7 @@ library
     exposed-modules:
         Network.CCNx
         Network.CCNx.BinaryXML
+        Network.CCNx.CCNb
         Network.CCNx.Messages
 
     extensions:

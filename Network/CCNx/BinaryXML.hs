@@ -114,5 +114,4 @@ parseHeader a = ((tt, n), b)
   n = f (fromIntegral $ shiftR a2 3 .&. 0xF) 4 $ reverse a1
   f n _ [] = n
   f n s (a : b) = f (n .|. shiftL (fromIntegral a) s) (s + 7) b
-  --header = "header: " ++ concat [ printf "%02x" a | a <- take (length a - length b) a ] ++ ": " ++ show tt ++ "  " ++ show n
 

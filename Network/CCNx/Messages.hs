@@ -33,12 +33,14 @@ import Data.ByteString (ByteString)
 data Message
   = ContentObjectMessage  ContentObject
   | InterestMessage Interest
+  deriving Show
 
 data ContentObject = ContentObject
   Signature
   Name
   SignedInfo
   Content
+  deriving Show
 
 type Content = ByteString
 
@@ -55,6 +57,7 @@ data SignedInfo = SignedInfo
   (Maybe FreshnessSeconds)
   (Maybe FinalBlockID)
   (Maybe KeyLocator)
+  deriving Show
 
 data Interest = Interest
   Name
@@ -66,12 +69,13 @@ data Interest = Interest
   (Maybe AnswerOriginKind)
   (Maybe Scope)
   (Maybe Nonce)
+  deriving Show
 
 type PublisherPublicKeyDigest = String
 
-data Exclude = Exclude (Maybe AnyBloom) [(Component, Maybe AnyBloom)]   
+data Exclude = Exclude (Maybe AnyBloom) [(Component, Maybe AnyBloom)]   deriving Show
 
-data AnyBloom = Any | Bloom String
+data AnyBloom = Any | Bloom String deriving Show
 
 type ChildSelector = Int
 type AnswerOriginKind = Int
@@ -86,17 +90,19 @@ type Timestamp = Int
 type FreshnessSeconds = Int
 type FinalBlockID = String
 
-data Type = DATA | ENCR | GONE | KEY | LINK | NACK
+data Type = DATA | ENCR | GONE | KEY | LINK | NACK deriving Show
 
 data KeyLocator
   = Key String
   | Certificate String
   | KeyName Name (Maybe PublisherID)
+  deriving Show
 
 data Signature = Signature
   (Maybe DigestAlgorithm)
   (Maybe Witness)
   SignatureBits
+  deriving Show
 
 type DigestAlgorithm = String
 type Witness = String
@@ -107,4 +113,5 @@ data PublisherID
   | PublisherCertificateDigest String
   | PublisherIssuerKeyDigest String
   | PublisherIssuerCertificateDigest String
+  deriving Show
 
