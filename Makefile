@@ -1,8 +1,9 @@
 .PHONY: all
-all: Network/CCNx/Messages.hs Network/CCNx/CCNb.hs
+all:
+	runhaskell -W Scripts.hs
 
 Network/CCNx/Messages.hs Network/CCNx/CCNb.hs: GenMsg.hs
-	runhaskell -W GenMsg.hs
+	runhaskell -W Scripts.hs
 
 .PHONY: clean
 clean:
